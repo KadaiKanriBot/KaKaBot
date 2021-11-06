@@ -1,5 +1,5 @@
-import {UserDto} from "./user.dto";
-import {IsNotEmpty} from "class-validator";
+import { UserDto } from './user.dto';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto extends UserDto {
   @IsNotEmpty()
