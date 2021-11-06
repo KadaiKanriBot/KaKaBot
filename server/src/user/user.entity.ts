@@ -3,10 +3,13 @@ import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  uuid: string;
 
   @Column()
-  studentId: number;
+  displayName: string;
+
+  @Column()
+  id: string;
 
   @Column()
   password: string;

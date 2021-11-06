@@ -1,24 +1,36 @@
-import {Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes, ValidationPipe} from '@nestjs/common';
-import {UserDto} from "./dto/user.dto";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UsePipes,
+  ValidationPipe
+} from '@nestjs/common';
+import {UserService} from "./user.service";
+import {CreateUserDto} from "./dto/create.user.dto";
 
 @Controller('user')
 export class UserController {
+  constructor(
+    private userService: UserService
+  ) {}
+
   @Get()
   getUsers() {
-    return "getUsers Success";
+    return this.userService.getUsers();
   }
 
   @Get("/:id")
   getUserById(
-    @Param('id', ParseIntPipe) id: number
+    @Param('id') id: number
   ) {
-    return `getUserById Success Params [id: ${id}]`
+      return this.userService.getUserById(id);
   }
 
   @Post()
   @UsePipes(ValidationPipe)
-  createUser(@Body() userDto: UserDto) {
-    const { id } = userDto;
-    return `createUser Success Params ${id}`;
+  createUser(@Body() createUserDto: CreateUserDto) {
+    return this.userService.createUser(createUserDto);
   }
 }
