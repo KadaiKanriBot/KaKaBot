@@ -21,9 +21,6 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Column('text', { array: true, nullable: true })
-  groups: string[];
-
   @BeforeInsert()
   addId() {
     this.uuid = v4();
