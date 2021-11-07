@@ -26,17 +26,10 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @ApiResponse({ status: 200, description: '成功しました' })
+  @ApiResponse({ status: 200, description: 'ユーザーの取得に成功しました' })
   getUsers() {
     const users = this.userService.getUsers();
     return plainToClass(UserDto, users);
-  }
-
-  @Get('/:id')
-  @ApiFoundResponse({ description: '成功しました。' })
-  @ApiNotFoundResponse({ description: '存在しないユーザーです。' })
-  getUserById(@Param('id') id: number) {
-    return this.userService.getUserById(id);
   }
 
   @Post()
@@ -47,5 +40,12 @@ export class UserController {
   @UsePipes(ValidationPipe)
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
+  }
+
+  @Get('/:id')
+  @ApiFoundResponse({ description: 'ユーザーの作成に成功しました。' })
+  @ApiNotFoundResponse({ description: '存在しないユーザーです。' })
+  getUserById(@Param('id') id: number) {
+    return this.userService.getUserById(id);
   }
 }

@@ -16,16 +16,31 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
+  /**
+   * @function getUsers
+   * @description 全てのユーザーを取得する。
+   * @return User[]
+   */
   async getUsers(): Promise<User[]> {
     return await this.userRepository.find();
   }
 
+  /**
+   * @function getUsersById
+   * @description id からユーザーを取得する。
+   * @param id
+   */
   async getUserById(id: number): Promise<User> {
     const foundUser = await this.userRepository.findOne(id);
     if (!foundUser) throw NotFoundException;
     return foundUser;
   }
 
+  /**
+   * @function createUser
+   * @description ユーザーを作成する。
+   * @param createUserDto
+   */
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { id, password, displayName } = createUserDto;
 
