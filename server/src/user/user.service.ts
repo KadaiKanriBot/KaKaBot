@@ -8,7 +8,6 @@ import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create.user.dto';
 import { getHash } from '../util/getHash';
-import { generateUuid } from '../util/uuid';
 
 @Injectable()
 export class UserService {
@@ -35,7 +34,6 @@ export class UserService {
     user.id = id;
     user.password = getHash(password);
     user.displayName = displayName;
-    user.uuid = generateUuid();
 
     try {
       await this.userRepository.save(user);

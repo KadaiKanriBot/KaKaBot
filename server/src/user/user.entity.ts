@@ -1,19 +1,31 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  BeforeInsert,
+  Column,
+  Entity,
+  PrimaryColumn,
+} from 'typeorm';
+import { v4 } from 'uuid';
 
-@Entity()
+@Entity('user')
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn('uuid')
   uuid: string;
-
-  @Column()
-  displayName: string;
 
   @Column()
   id: string;
 
   @Column()
+  displayName: string;
+
+  @Column()
   password: string;
 
-  @Column('text', { array: true })
+  @Column('text', { array: true, nullable: true })
   groups: string[];
+
+  @BeforeInsert()
+  addId() {
+    this.uuid = v4();
+  }
 }

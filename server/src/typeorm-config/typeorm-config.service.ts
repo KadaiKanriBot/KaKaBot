@@ -17,6 +17,7 @@ export class TypeormConfigService implements TypeOrmOptionsFactory {
       synchronize: this.strToBoolean(
         configService.get<string>('DB_SYNC', 'false'),
       ),
+      migrations: ['src/database/migrations/**/*.ts'],
     };
   }
 
