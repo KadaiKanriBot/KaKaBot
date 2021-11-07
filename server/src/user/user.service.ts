@@ -30,9 +30,10 @@ export class UserService {
    * @description id からユーザーを取得する。
    * @param id
    */
-  async getUserById(id: number): Promise<User> {
-    const foundUser = await this.userRepository.findOne(id);
-    if (!foundUser) throw NotFoundException;
+  async getUserById(id: string): Promise<User> {
+    let foundUser;
+    foundUser = await this.userRepository.findOne({id});
+    if (!foundUser) throw new NotFoundException()
     return foundUser;
   }
 

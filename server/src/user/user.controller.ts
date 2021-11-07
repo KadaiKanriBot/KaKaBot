@@ -45,7 +45,7 @@ export class UserController {
   @Get('/:id')
   @ApiFoundResponse({ description: 'ユーザーの作成に成功しました。' })
   @ApiNotFoundResponse({ description: '存在しないユーザーです。' })
-  getUserById(@Param('id') id: number) {
-    return this.userService.getUserById(id);
+  getUserById(@Param('id') id: string) {
+      return this.userService.getUserById(id);
   }
 }
