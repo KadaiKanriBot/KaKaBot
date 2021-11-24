@@ -3,26 +3,38 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  PrimaryColumn,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { v4 } from 'uuid';
+import { Groups } from '../groups/groups.entity';
+import { generateUuid } from '../util/uuid';
 
 @Entity('user')
 export class User extends BaseEntity {
-  @PrimaryColumn('uuid')
-  uuid: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
-  id: string;
+  uuid: string;
 
   @Column()
   displayName: string;
 
   @Column()
+  email: string;
+
+  @Column()
   password: string;
 
+  @ManyToMany(() => Groups, (group) => group.users)
+  groups: Groups[];
+
+  @UpdateDateColumn()
+  update: Date;
+
   @BeforeInsert()
-  addId() {
-    this.uuid = v4();
+  addUuid() {
+    this.uuid = generateUuid();
   }
 }

@@ -30,10 +30,9 @@ export class UserService {
    * @description id からユーザーを取得する。
    * @param id
    */
-  async getUserById(id: string): Promise<User> {
-    let foundUser;
-    foundUser = await this.userRepository.findOne({id});
-    if (!foundUser) throw new NotFoundException()
+  async getUserById(id: number): Promise<User> {
+    const foundUser = await this.userRepository.findOne(id);
+    if (!foundUser) throw new NotFoundException();
     return foundUser;
   }
 
@@ -43,11 +42,11 @@ export class UserService {
    * @param createUserDto
    */
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { id, password, displayName } = createUserDto;
+    const { email, password, displayName } = createUserDto;
 
     const user = new User();
 
-    user.id = id;
+    user.email = email;
     user.password = getHash(password);
     user.displayName = displayName;
 
