@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  nodejs:
+    image: node:17.0.1
+    volumes:
+      - .:/app:cached
+    working_dir: /app/server
+    entrypoint:
+      - sh
+    command:
+      - -c
+      - |
+        [ -f ~/.exec-onceo ] || {
+          yarn install && touch ~/.exec-once
+        }
+        yarn start:dev
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres:
+  nodejs:
