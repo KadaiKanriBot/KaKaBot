@@ -5,8 +5,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import {DeleteResult, Repository} from 'typeorm';
 import { CreateUserDto } from './dto/create.user.dto';
+import {getHash} from "../util/getHash";
 @Injectable()
 export class UserService {
   constructor(
@@ -50,4 +51,54 @@ export class UserService {
       throw new InternalServerErrorException();
     }
   }
+
+  /**
+   * @function changeUserDisplayName
+   * @description ユーザーの displayName を変更する。
+   * @param id
+   * @param newDisplayName
+   */
+  async changeUserDisplayName(id: number, newDisplayName: string): Promise<User>{
+    const user = await this.getUserById(id);
+    user.displayName = newDisplayName;
+
+    return this.userRepository.save(user);
+  }
+
+  /**
+   * @function changeUserEmail
+   * @description ユーザーの email を変更する。
+   * @param id
+   * @param newEmail
+   */
+  async changeUserEmail(id: number, newEmail: string): Promise<User>{
+    const user = await this.getUserById(id);
+    user.email = newEmail;
+
+    return this.userRepository.save(user);
+  }
+
+  /**
+   * @function changeUserPassword
+   * @description ユーザーの password を変更する。
+   * @param id
+   * @param newPassword
+   */
+  async changeUserPassword(id: number, newPassword: string): Promise<User>{
+    const user = await this.getUserById(id);
+    user.password = getHash(newPassword);
+
+    return this.userRepository.save(user);
+  }
+
+  /**
+   * @function deleteUser
+   * @description ユーザーを削除する。
+   * @param id
+   */
+  async deleteUser(id: number): Promise<DeleteResult>{
+    return this.userRepository.delete(id);
+  }
+
+
 }
