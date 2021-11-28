@@ -7,8 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create.user.dto';
-import { getHash } from '../util/getHash';
-
 @Injectable()
 export class UserService {
   constructor(
@@ -44,18 +42,12 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { email, password, displayName } = createUserDto;
 
-    const user = new User();
-
-    user.email = email;
-    user.password = getHash(password);
-    user.displayName = displayName;
+    const user = User.create(password, displayName, email);
 
     try {
-      await this.userRepository.save(user);
+      return await this.userRepository.save(user);
     } catch (error) {
       throw new InternalServerErrorException();
     }
-
-    return user;
   }
 }
