@@ -5,9 +5,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import {DeleteResult, Repository} from 'typeorm';
-import { CreateUserDto } from './dto/create.user.dto';
-import {getHash} from "../util/getHash";
+import { DeleteResult, Repository } from 'typeorm';
+import { getHash } from '../util/getHash';
 @Injectable()
 export class UserService {
   constructor(
@@ -16,7 +15,7 @@ export class UserService {
   ) {}
 
   /**
-   * @function getUsers
+   * @function
    * @description 全てのユーザーを取得する。
    * @return User[]
    */
@@ -38,11 +37,15 @@ export class UserService {
   /**
    * @function createUser
    * @description ユーザーを作成する。
-   * @param createUserDto
+   * @param email
+   * @param password
+   * @param displayName
    */
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { email, password, displayName } = createUserDto;
-
+  async createUser(
+    email: string,
+    password: string,
+    displayName: string,
+  ): Promise<User> {
     const user = User.create(password, displayName, email);
 
     try {
@@ -58,7 +61,10 @@ export class UserService {
    * @param id
    * @param newDisplayName
    */
-  async changeUserDisplayName(id: number, newDisplayName: string): Promise<User>{
+  async changeUserDisplayName(
+    id: number,
+    newDisplayName: string,
+  ): Promise<User> {
     const user = await this.getUserById(id);
     user.displayName = newDisplayName;
 
@@ -71,7 +77,7 @@ export class UserService {
    * @param id
    * @param newEmail
    */
-  async changeUserEmail(id: number, newEmail: string): Promise<User>{
+  async changeUserEmail(id: number, newEmail: string): Promise<User> {
     const user = await this.getUserById(id);
     user.email = newEmail;
 
@@ -84,7 +90,7 @@ export class UserService {
    * @param id
    * @param newPassword
    */
-  async changeUserPassword(id: number, newPassword: string): Promise<User>{
+  async changeUserPassword(id: number, newPassword: string): Promise<User> {
     const user = await this.getUserById(id);
     user.password = getHash(newPassword);
 
@@ -96,9 +102,7 @@ export class UserService {
    * @description ユーザーを削除する。
    * @param id
    */
-  async deleteUser(id: number): Promise<DeleteResult>{
+  async deleteUser(id: number): Promise<DeleteResult> {
     return this.userRepository.delete(id);
   }
-
-
 }

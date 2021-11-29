@@ -39,7 +39,8 @@ export class UserController {
   })
   @UsePipes(ValidationPipe)
   createUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+    const { displayName, password, email } = createUserDto;
+    return this.userService.createUser(email, password, displayName);
   }
 
   @Get('/:id')
