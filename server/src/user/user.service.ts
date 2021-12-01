@@ -15,7 +15,6 @@ export class UserService {
   ) {}
 
   /**
-   * @function
    * @description 全てのユーザーを取得する。
    * @return User[]
    */
@@ -24,7 +23,6 @@ export class UserService {
   }
 
   /**
-   * @function getUsersById
    * @description id からユーザーを取得する。
    * @param id
    */
@@ -35,7 +33,27 @@ export class UserService {
   }
 
   /**
-   * @function createUser
+   * @description email からユーザーを取得する。
+   * @param email
+   */
+  async getUserByEmail(email: string): Promise<User> {
+    const foundUser = await this.userRepository.findOne({email});
+    if (!foundUser) throw new NotFoundException();
+    return foundUser;
+  }
+
+  /**
+   * @description パスワードが正しいか判定する。
+   * @param id
+   * @param password
+   */
+  async checkPassword(id: number, password: string): Promise<boolean> {
+    const user = await this.getUserById(id);
+
+    return user.password === password;
+  }
+
+  /**
    * @description ユーザーを作成する。
    * @param email
    * @param password
@@ -56,7 +74,6 @@ export class UserService {
   }
 
   /**
-   * @function changeUserDisplayName
    * @description ユーザーの displayName を変更する。
    * @param id
    * @param newDisplayName
@@ -72,7 +89,6 @@ export class UserService {
   }
 
   /**
-   * @function changeUserEmail
    * @description ユーザーの email を変更する。
    * @param id
    * @param newEmail
@@ -85,7 +101,6 @@ export class UserService {
   }
 
   /**
-   * @function changeUserPassword
    * @description ユーザーの password を変更する。
    * @param id
    * @param newPassword
@@ -98,7 +113,6 @@ export class UserService {
   }
 
   /**
-   * @function deleteUser
    * @description ユーザーを削除する。
    * @param id
    */
