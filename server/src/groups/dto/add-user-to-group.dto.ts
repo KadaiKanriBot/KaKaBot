@@ -5,8 +5,4 @@ export class AddUserToGroupDto {
   @IsNotEmpty()
   @ApiProperty()
   userId: number;
-
-  @IsNotEmpty()
-  @ApiProperty()
-  groupId: number;
 }

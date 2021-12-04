@@ -37,7 +37,7 @@ export class UserService {
    * @param email
    */
   async getUserByEmail(email: string): Promise<User> {
-    const foundUser = await this.userRepository.findOne({email});
+    const foundUser = await this.userRepository.findOne({ email });
     if (!foundUser) throw new NotFoundException();
     return foundUser;
   }

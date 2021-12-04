@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Get,
-  InternalServerErrorException,
+  InternalServerErrorException, Param,
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -26,10 +26,12 @@ export class GroupsController {
   }
 
   @Post('/:name')
-  addUser(@Body() addUserDto: AddUserToGroupDto): void {
-    const { userId, groupId } = addUserDto;
-    this.groupsService.addUserToGroup(groupId, userId).catch(() => {
+  addUser(
+    @Param() id: number,
+    @Body() addUserDto: AddUserToGroupDto): void {
+    const { userId } = addUserDto;
+    this.groupsService.addUserToGroup(id, userId).catch(() => {
       throw new InternalServerErrorException();
     });
-  }
+  }z
 }
